@@ -1,18 +1,10 @@
 import path from 'path'
-import buble from 'rollup-plugin-buble'
+import typescript from 'rollup-plugin-typescript'
 import vue from 'rollup-plugin-vue'
 import { terser } from 'rollup-plugin-terser'
 import { version as packageVersion } from './package.json'
 
 const version = process.env.VERSION || packageVersion
-
-const banner = `
-/*!
- * @ionic/vue v${version}
- * ${new Date().getFullYear()} Modus Create
- * @license MIT
- */
-`
 
 const resolve = _path => path.resolve(__dirname, './', _path)
 
@@ -22,8 +14,7 @@ function outputConfig(suffix, format, opts = {}) {
       file: resolve(`./dist/ionic-vue${suffix}.js`),
       name: 'IonicVue',
       sourcemap: true,
-      format,
-      banner,
+      format
     },
     opts
   )
@@ -31,7 +22,7 @@ function outputConfig(suffix, format, opts = {}) {
 
 function baseConfig() {
   return {
-    input: resolve('./src/index.js'),
+    input: resolve('./src/index.ts'),
     output: [
       outputConfig('', 'umd', { globals: {} }),
       outputConfig('.esm', 'esm'),
@@ -45,14 +36,7 @@ function baseConfig() {
       '@ionic/core/dist/ionic/svg',
       'ionicons/dist/collection/icon/icon.css',
     ],
-    plugins: [
-      vue(),
-      buble({
-        transforms: {
-          dangerousForOf: true,
-        },
-      }),
-    ],
+    plugins: [vue(), typescript()],
   }
 }
 
