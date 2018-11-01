@@ -146,6 +146,7 @@ function playTransition(trans: Animation, opts: TransitionOptions): Promise<Anim
 }
 
 function fireWillEvents(win: Window, enteringEl: HTMLElement | undefined, leavingEl: HTMLElement | undefined) {
+  console.log('fireWillEvents');
   lifecycle(win, leavingEl, ViewLifecycle.WillLeave);
   lifecycle(win, enteringEl, ViewLifecycle.WillEnter);
 }
