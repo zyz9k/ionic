@@ -74,10 +74,11 @@ async function getAnimationBuilder(opts: TransitionOptions): Promise<AnimationBu
 }
 
 async function animation(animationBuilder: AnimationBuilder, opts: TransitionOptions): Promise<TransitionResult> {
+  fireWillEvents(opts.window, opts.enteringEl, opts.leavingEl);
   await waitForReady(opts, true);
 
   const trns = await opts.animationCtrl.create(animationBuilder, opts.baseEl, opts);
-  fireWillEvents(opts.window, opts.enteringEl, opts.leavingEl);
+ 
   await playTransition(trns, opts);
 
   if (trns.hasCompleted) {
@@ -92,10 +93,10 @@ async function animation(animationBuilder: AnimationBuilder, opts: TransitionOpt
 async function noAnimation(opts: TransitionOptions): Promise<TransitionResult> {
   const enteringEl = opts.enteringEl;
   const leavingEl = opts.leavingEl;
-
+  fireWillEvents(opts.window, enteringEl, leavingEl);
   await waitForReady(opts, false);
 
-  fireWillEvents(opts.window, enteringEl, leavingEl);
+  
   fireDidEvents(opts.window, enteringEl, leavingEl);
 
   return {
